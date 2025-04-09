@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Find Volunteering Opportunities</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    nav {
+      background-color: #2e7d32;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .page-header {
+      text-align: center;
+      padding: 2rem 1rem;
+      background-color: #e8f5e9;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      background-color: white;
+    }
+
+    .filters input,
+    .filters select,
+    .filters button {
+      padding: 0.6rem;
+      font-size: 1rem;
+    }
+
+    .opportunity-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.2rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    footer {
+      background-color: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <h2>Volunteer Finder</h2>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Find Opportunities</a></li>
+      <li><a href="#">Login</a></li>
+    </ul>
+  </nav>
+
+  <header class="page-header">
+    <h1>Find Opportunities</h1>
+    <p>Browse and filter volunteering options that match your passion and schedule.</p>
+  </header>
+
+  <section class="filters">
+    <input type="text" id="locationInput" placeholder="Enter location..." />
+    <select id="causeFilter">
+      <option value="">All Causes</option>
+      <option value="environment">Environment</option>
+      <option value="education">Education</option>
+      <option value="health">Health</option>
+      <option value="animals">Animal Welfare</option>
+    </select>
+    <select id="timeFilter">
+      <option value="">Any Time</option>
+      <option value="weekend">Weekend</option>
+      <option value="weekday">Weekday</option>
+      <option value="anytime">Anytime</option>
+    </select>
+    <button onclick="applyFilters()">Search</button>
+  </section>
+
+  <section id="results" class="opportunity-list"></section>
+
+  <footer>
+    <p>&copy; 2025 Volunteer Finder. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const opportunities = [
+      {
+        title: "Beach Clean-Up",
+        location: "Mumbai",
+        cause: "environment",
+        time: "weekend"
+      },
+      {
+        title: "Online Tutoring for Kids",
+        location: "Bangalore",
+        cause: "education",
+        time: "weekday"
+      },
+      {
+        title: "Blood Donation Camp Organizer",
+        location: "Chennai",
+        cause: "health",
+        time: "anytime"
+      },
+      {
+        title: "Pet Shelter Volunteer",
+        location: "Delhi",
+        cause: "animals",
+        time: "weekend"
+      }
+    ];
+
+    function displayOpportunities(list) {
+      const container = document.getElementById("results");
+      container.innerHTML = "";
+      if (list.length === 0) {
+        container.innerHTML = "<p>No matching opportunities found.</p>";
+        return;
+      }
+
+      list.forEach(op => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${op.title}</h3>
+          <p><strong>Location:</strong> ${op.location}</p>
+          <p><strong>Cause:</strong> ${op.cause}</p>
+          <p><strong>Time:</strong> ${op.time}</p>
+          <button>Apply Now</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function applyFilters() {
+      const loc = document.getElementById("locationInput").value.toLowerCase();
+      const cause = document.getElementById("causeFilter").value;
+      const time = document.getElementById("timeFilter").value;
+
+      const filtered = opportunities.filter(op =>
+        (loc === "" || op.location.toLowerCase().includes(loc)) &&
+        (cause === "" || op.cause === cause) &&
+        (time === "" || op.time === time)
+      );
+
+      displayOpportunities(filtered);
+    }
+
+    // Initial display
+    displayOpportunities(opportunities);
+  </script>
+</body>
+</html>
