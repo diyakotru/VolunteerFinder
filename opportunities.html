@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Find Volunteers - Organization Panel</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f1f8e9;
+      color: #333;
+    }
+
+    nav {
+      background-color: #33691e;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .page-header {
+      text-align: center;
+      padding: 2rem 1rem;
+      background-color: #dcedc8;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      background-color: white;
+    }
+
+    .filters input,
+    .filters select,
+    .filters button {
+      padding: 0.6rem;
+      font-size: 1rem;
+    }
+
+    .volunteer-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.2rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    footer {
+      background-color: #33691e;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <h2>Org Dashboard</h2>
+    <ul>
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="#">Find Volunteers</a></li>
+      <li><a href="#">Post Opportunity</a></li>
+    </ul>
+  </nav>
+
+  <header class="page-header">
+    <h1>Find Volunteers</h1>
+    <p>Search for motivated individuals who are ready to support your cause.</p>
+  </header>
+
+  <section class="filters">
+    <input type="text" id="locationInput" placeholder="Enter location..." />
+    <select id="skillFilter">
+      <option value="">All Skills</option>
+      <option value="teaching">Teaching</option>
+      <option value="event">Event Management</option>
+      <option value="social">Social Media</option>
+      <option value="healthcare">Healthcare</option>
+    </select>
+    <select id="availabilityFilter">
+      <option value="">Any Availability</option>
+      <option value="weekend">Weekend</option>
+      <option value="weekday">Weekday</option>
+    </select>
+    <button onclick="applyFilters()">Search</button>
+  </section>
+
+  <section id="results" class="volunteer-list"></section>
+
+  <footer>
+    <p>&copy; 2025 Volunteer Finder | Organization Panel</p>
+  </footer>
+
+  <script>
+    const volunteers = [
+      {
+        name: "Aman Sharma",
+        location: "Mumbai",
+        skill: "teaching",
+        availability: "weekday"
+      },
+      {
+        name: "Priya Desai",
+        location: "Delhi",
+        skill: "event",
+        availability: "weekend"
+      },
+      {
+        name: "Rahul Menon",
+        location: "Bangalore",
+        skill: "social",
+        availability: "weekday"
+      },
+      {
+        name: "Sneha Iyer",
+        location: "Chennai",
+        skill: "healthcare",
+        availability: "weekend"
+      }
+    ];
+
+    function displayVolunteers(list) {
+      const container = document.getElementById("results");
+      container.innerHTML = "";
+      if (list.length === 0) {
+        container.innerHTML = "<p>No volunteers match the selected filters.</p>";
+        return;
+      }
+
+      list.forEach(v => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${v.name}</h3>
+          <p><strong>Location:</strong> ${v.location}</p>
+          <p><strong>Skill:</strong> ${v.skill}</p>
+          <p><strong>Availability:</strong> ${v.availability}</p>
+          <button>Contact</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function applyFilters() {
+      const loc = document.getElementById("locationInput").value.toLowerCase();
+      const skill = document.getElementById("skillFilter").value;
+      const availability = document.getElementById("availabilityFilter").value;
+
+      const filtered = volunteers.filter(v =>
+        (loc === "" || v.location.toLowerCase().includes(loc)) &&
+        (skill === "" || v.skill === skill) &&
+        (availability === "" || v.availability === availability)
+      );
+
+      displayVolunteers(filtered);
+    }
+
+    // Initial load
+    displayVolunteers(volunteers);
+  </script>
+</body>
+</html>
